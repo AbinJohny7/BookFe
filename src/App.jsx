@@ -8,6 +8,10 @@ import Contact from './pages/Contact'
 import PNF from './pages/PNF'
 import { useState } from 'react'
 import Loader from './components/Loader'
+import { ToastContainer } from 'react-toastify'
+import Profile from './pages/Profile'
+import SingleBook from './pages/SingleBook'
+
 
 
 
@@ -25,11 +29,28 @@ return (
     <Route path='/books' element={<Book/>} />
      <Route path='/contact' element={<Contact/>} />
      <Route path='/login' element={<Auth/>} />
-      <Route path='/register' element={<Auth/>} />
-      
+     // set flag
+      <Route path='/register' element={<Auth  insideRegister={true} />} />
+      <Route path='/profile' element={<Profile/>}/>
+      <Route path='/view/:id/book' element={<SingleBook/>}/>
 
       <Route path='/*' element={<PNF/>} />
   </Routes>
+<ToastContainer
+position="top-center"
+autoClose={1500}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+
+/>
+
+
     </>
   )
 }

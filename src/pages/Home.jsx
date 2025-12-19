@@ -1,32 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-Header;
+import { toast } from "react-toastify";
+import { getLimitedBooks } from "../services/allApi";
+
+
 
 const Home = () => {
+const [
+  bookData,setBookData]=useState([])
+
+useEffect(()=>{
+  getBookData()
+},[]) 
+
+const getBookData=async () => {
+  try {
+    let apiResponse= await getLimitedBooks()
+    console.log(apiResponse)
+    if(apiResponse.status==200){
+      setBookData(apiResponse.data.limitedData)
+    }else{
+      toast.error(apiResponse.response.data.message)
+    }
+
+  } catch (error) {
+    console.log(error)
+    toast.error('Something went wrong while getting book data')
+  }
+}
+
+
+
   return (
     <>
       <Header />
-      <nav className="p-3 w-full bg-gray-900 text-white flex justify-center items-center">
-        <div className="flex justify-between items-center px-3">
-          <ul className="flex justify-center">
-            <a href="/">
-              <li className="mx-4 mt-3 ">Home</li>
-            </a>
-            <a href="/books">
-              <li className="mx-4 mt-3 ">Books</li>
-            </a>
-            <a href="/carrers">
-              <li className="mx-4 mt-3 ">Carrers</li>
-            </a>
-            <a href="/contact">
-              <li className="mx-4 mt-3 ">Contact</li>
-            </a>
-          </ul>
-        </div>
-      </nav>
+      
       <header className="flex justify-center items-center">
         <div id="main" className="flex justify-center items-center w-full">
           <div className="text-white flex justify-center items-center flex-col px-5">
@@ -49,18 +60,26 @@ const Home = () => {
       <section className="flex justify-center items-center flex-col p-10 ">
         <h2>NEW ARRIVALS</h2>
         <h4 className="text-2xl">Explore Our Latest Collection</h4>
-        <div className="grid grid-cols-4 w-full mt-5">
-        <div className="p-3">
+        {
+          bookData?.length>0 &&  <div className="grid grid-cols-4 w-full mt-5">
+       {
+        bookData?.map((eachBook)=>(
+           <div className="p-3">
           <div className="p-3 shadow-md ">
-            <img  src="" alt=""  style={{width:"100%",height:"300px"}}/>
+            <img  src={eachBook.imgURL} alt=""  style={{width:"100%",height:"300px"}}/>
             <div className="flex justify-center flex-col items-center mt-3">
-            <p className="text-blue-700">sdvsdvs...</p>
-            <h3>sdvsdv...</h3>
-            <p>$ 222</p>
+            <p className="text-blue-700">{eachBook.title}</p>
+            <h3>{eachBook.author}</h3>
+            <p>{eachBook.price}</p>
           </div>
           </div>
         </div>
+        ))
+       }
+
         </div>
+        }
+       
       <div className="flex justify-center items-center my-5">
       <button className="px-3 py-2 bg-blue-900 text-white hover:bg-white ">Explore More</button>
       </div>

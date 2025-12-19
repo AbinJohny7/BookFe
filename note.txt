@@ -1,0 +1,21 @@
+1.https://www.npmjs.com/package/@react-oauth/google
+2.google console
+->create a new project
+->crendential ->consent screen->Fill details
+-get client id
+3.Inside Main.jsx
+import @react-oauth/google
+
+
+
+
+
+
+
+
+
+
+
+
+
+798719705874-eenojv1t7uh4tuqcecvpkpfokp8i06v9.apps.googleusercontent.com
