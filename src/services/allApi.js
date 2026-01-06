@@ -22,3 +22,23 @@ export const getAllBooks=async (reqHeader,searchKey) => {
 export const getsinglebook=async (id,reqHeader) => {
     return await axiosConfig("get",`${baseURL}/getSingleBook/${id}`,"",reqHeader)
 }
+export const getUserDetails=async (reqHeader) => {
+    return await axiosConfig("get",`${baseURL}/userDetails`,"",reqHeader)
+}
+
+export const updateProfile=async (id,reqBody,reqHeader) => {
+    return await axiosConfig("patch",`${baseURL}/${id}/updateProfile`,reqBody,reqHeader     )
+}
+
+export const getAllUsers=async (reqHeader) => {
+    return await axiosConfig('get',baseURL+`/getAllUsers`,"",reqHeader)
+}
+export const addJob=async (reqBody,reqHeader) => {
+    return await axiosConfig('post',baseURL+'/addJob',reqBody,reqHeader)
+}
+export const getAllJobs=async () => {
+    return await axiosConfig('get',baseURL+'/getAllJobs',"")
+}
+export const deleteJob=async (id,reqHeader) => {
+    return await axiosConfig('delete',`${baseURL}/${id}/deleteJob`,{},reqHeader)
+}

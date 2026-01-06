@@ -51,7 +51,13 @@ const Auth = ({ insideRegister }) => {
       if (apiResponse.status == 200) {
         toast.success("Login Sucessfully");
         localStorage.setItem("token", apiResponse.data.token);
-        navigate("/");
+        if(apiResponse.data.existingUser.userType=="admin"){
+          navigate("/admin-home")
+        }else{
+             navigate("/");
+        }
+
+     
       } else {
         toast.error(apiResponse.response.data.message);
       }

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { getsinglebook } from "../services/allApi";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 
+import { baseURL } from "../services/baseURL";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 
 const SingleBook = () => {
   let { id } = useParams();
@@ -98,22 +99,18 @@ const SingleBook = () => {
         <Modal className="mx-60 " show={openModal} onClose={() => setOpenModal(false)}>
         <ModalHeader className="bg-gray-600">Terms of Service</ModalHeader>
         <ModalBody className="bg-gray-600">
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
-              companies around the world are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant
-              to ensure a common set of data rights in the European Union. It requires organizations to notify users as
-              soon as possible of high-risk data breaches that could personally affect them.
-            </p>
+          <div className="space-y-6 flex justify-evenly">
+            {
+              bookData?.uploadedImages?.map((eachImages)=>(
+                <img src={`${baseURL}/uploads/${eachImages}`} alt=""></img>
+              ))
+            }
           </div>
         </ModalBody>
         <ModalFooter className="bg-gray-600">
           
-          <Button color="alternative" onClick={() => setOpenModal(false)}>
-            Decline
+          <Button className="text-xl bg-gray-800 p-2 rounded border" onClick={() => setOpenModal(false)}>
+            close
           </Button>
         </ModalFooter>
       </Modal>

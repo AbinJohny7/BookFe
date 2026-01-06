@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
-import { addBook } from "../services/allApi";
+import { addBook, getUserDetails } from "../services/allApi";
+import EditProfile from "../components/EditProfile";
 const Profile = () => {
   const [sellBookFlag, setSellBookFlag] = useState(true);
   const [bookStatusFlag, setBookStatusFlag] = useState(false);
   const [purchaseHistory, setpurchaseHistory] = useState(false);
+   const [openModal, setOpenModal] = useState(false);
   const [preview, setPreview] = useState(
     "https://repository-images.githubusercontent.com/327048300/32932e00-5a97-11eb-9948-15fed461c725"
   );
   const [previewArray, setPreviewArray] = useState([]);
+  const [userDetails,setUserDetails]=useState({})
 
   const [bookData, setBookData] = useState({
     title: "",
@@ -26,6 +29,29 @@ const Profile = () => {
     category: "",
     uploadedImages: [],
   });
+useEffect(()=>{
+getUserData()
+},[])
+
+const getUserData=async () => {
+  try {
+    let token=localStorage.getItem('token')
+    let header={
+      Authorization:`Bearer ${token}`
+    }
+    let apiResponse= await getUserDetails(header)
+    if(apiResponse.status==200){
+      setUserDetails(apiResponse.data)
+
+    }else{
+      toast.error(apiResponse.response.data.message)
+    }
+    
+  } catch (error) {
+    toast.error("something went wrong while fetching user details")
+  }
+}
+
 
   const onImageClick = (e) => {
     console.log(e.target.files[0]);
@@ -92,9 +118,8 @@ const Profile = () => {
           <span className="text-3xl ">Abin</span>
         </p>
         <div className="flex justify-end">
-          <button className="text-blue-600 border border-blue-600 rounded p-3 hover:bg-blue-600 hover:text-white ">
-            Edit
-          </button>
+            <EditProfile userDetails={userDetails} />
+
         </div>
       </div>
       <p className="md:px-20 px-5 my-5 text-justify">
@@ -138,6 +163,7 @@ const Profile = () => {
           Purchase History
         </button>
       </div>
+      
       <div>
         {sellBookFlag && (
           <div className="mx-25 bg-gray-300">
@@ -301,7 +327,7 @@ const Profile = () => {
         {bookStatusFlag && <div></div>}
         {purchaseHistory && <div></div>}
       </div>
-
+  
       <Footer />
     </>
   );
