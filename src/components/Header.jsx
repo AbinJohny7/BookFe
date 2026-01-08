@@ -61,11 +61,11 @@ const Header = () => {
                 }
                 dismissOnClick={false}
               >
-                <div>
+                <div className="text-black">
                   {" "}
                   <Link to={"/profile"}>Profile</Link>
                 </div>
-                <div className="cursor-pointer" onClick={onLogoutClick}>
+                <div className="cursor-pointer text-black" onClick={onLogoutClick}>
                   {" "}
                   <button>Logout</button>
                 </div>

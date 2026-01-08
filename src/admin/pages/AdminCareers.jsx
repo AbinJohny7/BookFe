@@ -133,7 +133,7 @@ const onDeleteClick=async (id) => {
               <div>
                 {jobData?.map((eachJob) => (
                   <Card  className="max-w-full bg-amber-400 mx-30 my-10">
-                    <button onClick={onDeleteClick} className="bg-black text-amber-400 w-25 cursor-pointer">Delete</button>
+                    <button onClick={()=>onDeleteClick(eachJob._id)} className="bg-black text-amber-400 w-25 cursor-pointer">Delete</button>
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                      JobID: {eachJob.jobId}
                     </h5>
