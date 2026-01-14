@@ -1,7 +1,7 @@
 import {Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Book from "./pages/Book";
+import Book from "./pages/Books";
 import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
 import PNF from "./pages/PNF";
