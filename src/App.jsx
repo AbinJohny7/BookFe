@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Book from "./pages/Book";
@@ -18,6 +18,7 @@ import Carrers from "./pages/Carrers";
 import PaymentSuccess from "./components/PaymentSuccess";
 import PaymentFail from "./components/PaymentFail";
 
+
 function App() {
   const [showHome, setShowHome] = useState(false);
   setTimeout(() => {
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <>
+   <BrowserRouter>
       <Routes>
         <Route path="/" element={showHome ? <Home /> : <Loader />} />
         <Route path="/books" element={<Book />} />
@@ -44,6 +46,7 @@ function App() {
         <Route path="/payment-failure" element={<PaymentFail/>} />
         <Route path="/*" element={<PNF />} />
       </Routes>
+   </BrowserRouter>
       <ToastContainer
         position="top-center"
         autoClose={1500}
