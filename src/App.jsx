@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Book from "./pages/Book";
@@ -27,7 +27,6 @@ function App() {
 
   return (
     <>
-   <BrowserRouter>
       <Routes>
         <Route path="/" element={showHome ? <Home /> : <Loader />} />
         <Route path="/books" element={<Book />} />
@@ -46,7 +45,6 @@ function App() {
         <Route path="/payment-failure" element={<PaymentFail/>} />
         <Route path="/*" element={<PNF />} />
       </Routes>
-   </BrowserRouter>
       <ToastContainer
         position="top-center"
         autoClose={1500}
