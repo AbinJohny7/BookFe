@@ -28,19 +28,19 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={showHome ? <Home /> : <Loader />} />
-        <Route path="/books" element={<Book />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={showHome ? <Home/> : <Loader/>} />
+        <Route path="/books" element={<Book/>} />
+        <Route path="/contact" element={<Contact/>} />
         <Route path="/carrers" element={<Carrers/>} />
-        <Route path="/login" element={<Auth />} />
+        <Route path="/login" element={<Auth/>} />
 
         <Route path="/register" element={<Auth insideRegister={true} />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/view/:id/book" element={<SingleBook />} />
-        <Route path="/admin-home" element={<AdminHome />} />
-        <Route path="/admin-books" element={<AdminBooks />} />
-        <Route path="/admin-careers" element={<AdminCareers />} />
-        <Route path="/admin-settings" element={<AdminSetting />} />
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/view/:id/book" element={<SingleBook/>} />
+        <Route path="/admin-home" element={<AdminHome/>} />
+        <Route path="/admin-books" element={<AdminBooks/>} />
+        <Route path="/admin-careers" element={<AdminCareers/>} />
+        <Route path="/admin-settings" element={<AdminSetting/>} />
         <Route path="/payment-success" element={<PaymentSuccess/>} />
         <Route path="/payment-failure" element={<PaymentFail/>} />
         <Route path="/*" element={<PNF />} />
