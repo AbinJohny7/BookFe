@@ -32,7 +32,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/carrers" element={<Carrers/>} />
         <Route path="/login" element={<Auth />} />
-        // set flag
+
         <Route path="/register" element={<Auth insideRegister={true} />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/view/:id/book" element={<SingleBook />} />
