@@ -45,3 +45,12 @@ export const deleteJob=async (id,reqHeader) => {
 export const applyJobData=async (reqBody,reqHeader) => {
     return await axiosConfig('post',`${baseURL}/applyJob`,reqBody,reqHeader)
 }
+
+export const getAllApplications=async (reqHeader) => {
+    return await axiosConfig('get',`${baseURL}/getAllApplications`,"",reqHeader)
+}
+
+export const buyBook=async (reqBody,reqHeader) => {
+    return await axiosConfig('post',`${baseURL}/buyBook`,reqBody,reqHeader)
+    
+}

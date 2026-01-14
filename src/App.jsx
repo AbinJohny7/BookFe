@@ -15,6 +15,8 @@ import AdminBooks from "./admin/pages/AdminBooks";
 import AdminCareers from "./admin/pages/AdminCareers";
 import AdminSetting from "./admin/pages/AdminSetting";
 import Carrers from "./pages/Carrers";
+import PaymentSuccess from "./components/PaymentSuccess";
+import PaymentFail from "./components/PaymentFail";
 
 function App() {
   const [showHome, setShowHome] = useState(false);
@@ -38,6 +40,8 @@ function App() {
         <Route path="/admin-books" element={<AdminBooks />} />
         <Route path="/admin-careers" element={<AdminCareers />} />
         <Route path="/admin-settings" element={<AdminSetting />} />
+        <Route path="/payment-success" element={<PaymentSuccess/>} />
+        <Route path="/payment-failure" element={<PaymentFail/>} />
         <Route path="/*" element={<PNF />} />
       </Routes>
       <ToastContainer

@@ -5,13 +5,16 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Dropdown, DropdownItem } from "flowbite-react";
+import { authContext } from "../context/authContext";
+
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const {removeToken}=useContext(authContext)
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -22,7 +25,8 @@ const Header = () => {
   //use navigate use in functions for navigate
 
   const onLogoutClick = () => {
-    localStorage.clear();
+    // localStorage.clear();
+    removeToken()
     navigate("/");
   };
 

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { getAllBooks } from "../services/allApi";
 import { toast } from "react-toastify";
+import { authContext } from "../context/authContext";
 
 
 const Books = () => {
+  const {token}=useContext(authContext)
+  console.log(token)
   const [isloggedIn, setIsLoggedIn] = useState(false);
   const[bookData,setBookData]=useState([])
    const[duplicateBookData,setDuplicateBookData]=useState([])
@@ -22,7 +25,7 @@ const Books = () => {
 
   const getBookData = async () => {
     try {
-      let token = localStorage.getItem("token");
+      // let token = localStorage.getItem("token");
       let header = {
         Authorization: `Bearer ${token}`,
       };

@@ -11,11 +11,23 @@ import @react-oauth/google
 
 
 
-
-
-
-
-
-
-
 798719705874-eenojv1t7uh4tuqcecvpkpfokp8i06v9.apps.googleusercontent.com
+
+
+The Context API is a built-in feature in React that allows you to share data
+ and state across components without having to pass props manually through every
+  level of the component tree, a problem known as "prop drilling". It is ideal for
+   managing global state like themes, authentication status, or user preferences
+
+   create context
+   -first,use the createContext function from react to create a context object
+
+   provider-wrap the components that need access to thhee shared data with the context's provider component.
+   The provider accepts a value prop  which holds the data you want to share.
+
+   useContext-
+   usecontext is aReact Hook that simplifies accessing data from react's context api allowing components to
+    subscribe to contextapi allowing components to subscribe to context changes and consume shared data(like themes,user auth)
+    without prop drilling, by reading values from  the nearest context provider up the componets tree,avoiding mannual prop
+    passing through intermidate components
+    

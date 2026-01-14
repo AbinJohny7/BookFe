@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdminHeader from "../components/AdminHeader";
 import AdminSidebar from "../components/AdminSidebar";
 import { Card } from "flowbite-react";
@@ -10,14 +10,29 @@ import {
   ModalHeader,
 } from "flowbite-react";
 import { toast } from "react-toastify";
-import { addJob, deleteJob, getAllJobs } from "../../services/allApi";
-
+import {
+  addJob,
+  deleteJob,
+  getAllApplications,
+  getAllJobs,
+} from "../../services/allApi";
+import { authContext } from "../../context/authContext";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from "flowbite-react";
+import { baseURL } from "../../services/baseURL";
 const AdminCareers = () => {
   const [openModal, setOpenModal] = useState(false);
   const [showJobs, setShowJobs] = useState(true);
   const [showApplication, setShowApplication] = useState(false);
   const [jobData, setJobData] = useState([]);
-
+  const [applyData, setApplyData] = useState([]);
+  const { token } = useContext(authContext);
   const [jobInputData, setJobInputData] = useState({
     jobId: "",
     jobRole: "",
@@ -30,6 +45,7 @@ const AdminCareers = () => {
 
   useEffect(() => {
     getJobData();
+    getApplyData();
   }, []);
 
   const onAddJobClick = async () => {
@@ -51,29 +67,24 @@ const AdminCareers = () => {
     }
   };
 
-const onDeleteClick=async (id) => {
-  try {
-    let token=localStorage.getItem('token')
-    let header={
-      Authorization:`Bearer ${token}`
+  const onDeleteClick = async (id) => {
+    try {
+      let token = localStorage.getItem("token");
+      let header = {
+        Authorization: `Bearer ${token}`,
+      };
+      let apiResponse = await deleteJob(id, header);
+      if (apiResponse.status == 200) {
+        toast.success("Sucessfully Deleted");
+        getJobData();
+      } else {
+        toast.error(apiResponse.response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong while deleting job");
     }
-    let apiResponse=await deleteJob(id,header)
-    if(apiResponse.status==200){
-      toast.success("Sucessfully Deleted")
-      getJobData()
-
-    }else{
-      toast.error(apiResponse.response.data.message)
-    }
-  } catch (error) {
-    console.log(error)
-    toast.error("something went wrong while deleting job")
-    
-  }
-  
-}
-
-
+  };
 
   const getJobData = async () => {
     try {
@@ -87,6 +98,23 @@ const onDeleteClick=async (id) => {
     } catch (error) {
       console.log(error);
       toast.error("Something went wrrong while getting jobs");
+    }
+  };
+
+  const getApplyData = async () => {
+    try {
+      let header = {
+        Authorization: `Bearer ${token}`,
+      };
+      let apiResponse = await getAllApplications(header);
+      if (apiResponse.status == 200) {
+        setApplyData(apiResponse.data);
+      } else {
+        toast.error(apiResponse.response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while getting apllication data");
     }
   };
 
@@ -129,32 +157,84 @@ const onDeleteClick=async (id) => {
                 >
                   Add New Job
                 </button>
-                  {jobData?.length > 0 ? (
+                {jobData?.length > 0 ? (
+                  <div>
+                    {jobData?.map((eachJob) => (
+                      <Card className="max-w-full bg-amber-400 mx-30 my-10">
+                        <button
+                          onClick={() => onDeleteClick(eachJob._id)}
+                          className="bg-black text-amber-400 w-25 cursor-pointer"
+                        >
+                          Delete
+                        </button>
+                        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                          JobID: {eachJob.jobId}
+                        </h5>
+                        <p className="font-normal text-white-200 dark:text-white-200">
+                          JobRole:{eachJob.jobRole}
+                        </p>
+                        <p className="font-normal text-white-200 dark:text-white-200">
+                          JobDesc:{eachJob.jobDesc}
+                        </p>
+                        <p className="font-normal text-white-200 dark:text-white-200">
+                          PublishedDate:{eachJob.publishedDate}
+                        </p>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <h1>No Jobs Added</h1>
+                )}
+              </div>
+            )}
+            {showApplication && (
               <div>
-                {jobData?.map((eachJob) => (
-                  <Card  className="max-w-full bg-amber-400 mx-30 my-10">
-                    <button onClick={()=>onDeleteClick(eachJob._id)} className="bg-black text-amber-400 w-25 cursor-pointer">Delete</button>
-                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                     JobID: {eachJob.jobId}
-                    </h5>
-                    <p className="font-normal text-white-200 dark:text-white-200">
-                      JobRole:{eachJob.jobRole}
-                    </p>
-                     <p className="font-normal text-white-200 dark:text-white-200">
-                      JobDesc:{eachJob.jobDesc}
-                    </p>
-                     <p className="font-normal text-white-200 dark:text-white-200">
-                      PublishedDate:{eachJob.publishedDate}
-                    </p>
-                  </Card>
-                ))}
+                {applyData?.length > 0 ? (
+                  <div className="overflow-x-auto mt-5">
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                           <TableHeadCell>JobId</TableHeadCell>
+                          <TableHeadCell>JobRole</TableHeadCell>
+                          <TableHeadCell>FullName</TableHeadCell>
+                          <TableHeadCell>Email</TableHeadCell>
+                          <TableHeadCell>PhoneNumber</TableHeadCell>
+                            <TableHeadCell>Resume</TableHeadCell>
+                         
+                        </TableRow>
+                      </TableHead>
+                      <TableBody className="divide-y">
+                       {applyData?.map((eachData)=>(
+                         <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+                           <TableCell >
+                           {eachData.jobId}
+                          </TableCell>
+                          <TableCell >
+                           {eachData.jobRole}
+                          </TableCell>
+                          <TableCell>{eachData.fullName}</TableCell>
+                          <TableCell>{eachData.email}</TableCell>
+                          <TableCell>{eachData.phoneNumber}</TableCell>
+                          <TableCell>
+                            <a
+                            target="_blank"
+                              href={`${baseURL}/uploads/${eachData.resume}`}
+                              className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                            >
+                              Download resume
+                            </a>
+                          </TableCell>
+                        </TableRow>
+                       ))}
+                    
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <h1>No Application Received</h1>
+                )}
               </div>
-            ) : (
-              <h1>No Jobs Added</h1>
             )}
-              </div>
-            )}
-            {showApplication && <div>Show Application</div>}
           </div>
         </div>{" "}
         <Modal
@@ -255,7 +335,6 @@ const onDeleteClick=async (id) => {
                 />
               </div>
             </div>
-            
           </ModalBody>
           <ModalFooter className="bg-gray-400">
             <Button
@@ -269,11 +348,8 @@ const onDeleteClick=async (id) => {
               onClick={onAddJobClick}
             >
               Add Job
-                
             </Button>
-         
           </ModalFooter>
-         
         </Modal>
       </div>
     </>

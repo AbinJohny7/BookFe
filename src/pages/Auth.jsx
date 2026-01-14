@@ -1,7 +1,7 @@
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 //returns a function that lets you navigate programmatically in the browser in
 // response to user interactions or effect
 
@@ -10,9 +10,11 @@ import { googleLoginAPI, loginUser, registerUser } from "../services/allApi";
 import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { authContext } from "../context/authContext";
 
 const Auth = ({ insideRegister }) => {
   const navigate = useNavigate();
+  const { saveToken } = useContext(authContext);
   const [userData, setUserData] = useState({
     userName: "",
     password: "",
@@ -24,7 +26,7 @@ const Auth = ({ insideRegister }) => {
         userData.userName == "" ||
         userData.password == "" ||
         userData.email == ""
-      ) { 
+      ) {
         toast.error("Please fill the form");
       } else {
         let apiResponse = await registerUser(userData);
@@ -50,14 +52,13 @@ const Auth = ({ insideRegister }) => {
       console.log(apiResponse);
       if (apiResponse.status == 200) {
         toast.success("Login Sucessfully");
-        localStorage.setItem("token", apiResponse.data.token);
-        if(apiResponse.data.existingUser.userType=="admin"){
-          navigate("/admin-home")
-        }else{
-             navigate("/");
+        // localStorage.setItem("token", apiResponse.data.token);
+        saveToken(apiResponse.data.token)
+        if (apiResponse.data.existingUser.userType == "admin") {
+          navigate("/admin-home");
+        } else {
+          navigate("/");
         }
-
-     
       } else {
         toast.error(apiResponse.response.data.message);
       }
@@ -68,25 +69,26 @@ const Auth = ({ insideRegister }) => {
   };
   //for decoding
 
-  const  decodeFn= async(credentials)=>{
-    console.log(credentials)
-    let decodedData=jwtDecode(credentials.credential)
-    console.log(decodedData)
-    let payload={
-      userName:decodedData.name,
-      email:decodedData.email,
-      proPic:decodedData.picture
+  const decodeFn = async (credentials) => {
+    console.log(credentials);
+    let decodedData = jwtDecode(credentials.credential);
+    console.log(decodedData);
+    let payload = {
+      userName: decodedData.name,
+      email: decodedData.email,
+      proPic: decodedData.picture,
+    };
+    let apiResponse = await googleLoginAPI(payload);
+    console.log(apiResponse);
+    if (apiResponse.status == 200 || apiResponse.status == 201) {
+      toast.success(apiResponse.data.message);
+      // localStorage.setItem("token", apiResponse.data.token);
+      saveToken(apiResponse.data.token)
+      navigate("/");
+    } else {
+      toast.error(apiResponse.response.data.message);
     }
-    let apiResponse=await googleLoginAPI(payload)
-    console.log(apiResponse)
-   if (apiResponse.status==200 || apiResponse.status==201){
-      toast.success(apiResponse.data.message)
-      localStorage.setItem('token',apiResponse.data.token)
-      navigate('/')
-    }else{
-      toast.error(apiResponse.response.data.message)
-    }
-  }
+  };
 
   return (
     <div id="login">
@@ -162,7 +164,7 @@ const Auth = ({ insideRegister }) => {
           <p class="text-white">------------------ or ---------------</p>
           <GoogleLogin
             onSuccess={(credentialResponse) => {
-              decodeFn(credentialResponse)
+              decodeFn(credentialResponse);
             }}
             onError={() => {
               console.log("Login Failed");
@@ -170,15 +172,14 @@ const Auth = ({ insideRegister }) => {
           />
           ;
           <div className="mb-5 mt-3w-full">
-               <p className="text-white text-center">
-            "Are you a New user ?"
-            <button>
-              {" "}
-              <Link to={"/register"}>Register</Link>{" "}
-            </button>
-          </p>
-            </div>
-         
+            <p className="text-white text-center">
+              "Are you a New user ?"
+              <button>
+                {" "}
+                <Link to={"/register"}>Register</Link>{" "}
+              </button>
+            </p>
+          </div>
         </form>
       </div>
     </div>
