@@ -1,7 +1,6 @@
 import {Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Book from "./pages/Books";
 import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
 import PNF from "./pages/PNF";
@@ -17,6 +16,8 @@ import AdminSetting from "./admin/pages/AdminSetting";
 import Carrers from "./pages/Carrers";
 import PaymentSuccess from "./components/PaymentSuccess";
 import PaymentFail from "./components/PaymentFail";
+import Books from "./pages/Books";
+
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={showHome ? <Home/> : <Loader/>} />
-        <Route path="/books" element={<Book/>} />
+        <Route path="/books" element={<Books/>} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/carrers" element={<Carrers/>} />
         <Route path="/login" element={<Auth/>} />
